@@ -1,10 +1,14 @@
 # VelocityTrajectory
 A tool for infering scRNA trajectory from RNA velocity
 # Dependency
-Python package: rpy2
-R package: princurve
+Python package:   rpy2
+<br>R package:   princurve  
+
+The script wokrs on python but it depends on a R package "princurve".   
+You should install R_3.6(or higher version) and install "princurve" for your system.
+
 # Usage
-python runVelocityTrajectory.py embedding.txt delta_embedding.txt 5 1000 0.01 100
+python runVelocityTrajectory.py embedding,delta_embedding,   deltaThreshold,SPnumber,graphClusterCutoff,WCCsizeCutoff,thres_cellshape,outfolder
 # Input
 1.embedding_file - a txt file with N rows and 2 columns. It can be obtained from "velocyto"(The attribute "embedding").
 2.delta_embedding - a txt file with N rows and 2columns. It can be obtained from "velocyto"(The attribute "delta_embedding")
