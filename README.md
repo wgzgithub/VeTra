@@ -38,3 +38,5 @@ python runVelocityTrajectory.py embedding,delta_embedding,   deltaThreshold,SPnu
 6.WCCsizeCutoff - 
 
 7.thres_cellshape - 
+
+8. outfolder - A absolute or relative path for output. 
