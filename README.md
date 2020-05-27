@@ -5,7 +5,7 @@ Python package:   rpy2
 <br>R package:   princurve  
 
 The script wokrs on python but it depends on a R package "princurve".   
-You should install R 3.6(or higher version) and install "princurve" for your system.
+Users should install R 3.6(or higher version) and install "princurve" for your system.
 
 # Usage
 ```
@@ -22,7 +22,7 @@ python run.py [embedding] [delta_embedding] [deltaThreshold] [SPnumber] [graphCl
 -2.453315327236579968e+00 -7.753647990937119205e-01
 ```
 
-2.delta_embedding - a txt file with N cells in rows and 2 velocity coodinates in columns. You can run "velocyto"(http://velocyto.org/) to get delta_embedding .  
+2.delta_embedding - a txt file with N cells in rows and 2 velocity coodinates in columns. Users can run "velocyto"(http://velocyto.org/) to get delta_embedding .  
 #### example  
 ```
 -1.662885950152473424e-02 -1.019793607352199594e-01
