@@ -12,10 +12,10 @@ python runVelocityTrajectory.py embedding,delta_embedding,   deltaThreshold,SPnu
 # Input
 1.embedding_file - a txt file with N rows and 2 columns. It can be obtained from "velocyto"(The attribute "embedding").  
 example  
-'''Python
+···Python
 -6.344244118975589153e+00 1.268898329669120084e+00
 -3.511296625112249714e+00 -3.950214438779450082e-02
-'''
+···
 
 2.delta_embedding - a txt file with N rows and 2columns. It can be obtained from "velocyto"(The attribute "delta_embedding").  
 
