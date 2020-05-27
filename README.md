@@ -46,7 +46,7 @@ python run.py [embedding] [delta_embedding] [deltaThreshold] [SPnumber] [graphCl
 
 # Output
 
-1.There are 6 csv format files.
+1.There are 6 csv format files including shortest path and clusters for embeeding graph.
 
 2.cluster_x_cell_select.txt - a txt file of cell selection data for each cluster.("x" is order number of cluster)
 
