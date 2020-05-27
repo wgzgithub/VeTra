@@ -37,6 +37,16 @@ python runVelocityTrajectory.py embedding,delta_embedding,   deltaThreshold,SPnu
 
 6.WCCsizeCutoff - 
 
-7.thres_cellshape - 
+7.thres_cellshape -  
 
-8. outfolder - A absolute or relative path for output. 
+8.outfolder - A absolute or relative path for output. 
+
+
+# Output
+
+1. embeddingGraphShortestpath.csv embeddingGraphSPclusters.csv embeddingGraphSPstart.csv embeddingGraphSPend.csv graphSource.csv graphTarget.csv 
+
+2.cluster_x_cell_select.txt - a txt file of cell selection data for each cluster.("x" is order number of cluster)
+
+3.cluster_x_pseudotime - a txt file of pseudotime data with N time points in the same order as the N cells for each cluster.("x" is order number of cluster)
+
