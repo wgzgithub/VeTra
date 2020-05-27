@@ -44,7 +44,7 @@ python runVelocityTrajectory.py embedding,delta_embedding,   deltaThreshold,SPnu
 
 # Output
 
-1. embeddingGraphShortestpath.csv embeddingGraphSPclusters.csv embeddingGraphSPstart.csv embeddingGraphSPend.csv graphSource.csv graphTarget.csv 
+1.embeddingGraphShortestpath.csv embeddingGraphSPclusters.csv embeddingGraphSPstart.csv embeddingGraphSPend.csv graphSource.csv graphTarget.csv 
 
 2.cluster_x_cell_select.txt - a txt file of cell selection data for each cluster.("x" is order number of cluster)
 
