@@ -8,7 +8,7 @@ The script wokrs on python but it depends on a R package "princurve".
 You should install R 3.6(or higher version) and install "princurve" for your system.
 
 # Usage
-python run.py embedding,delta_embedding,   deltaThreshold,SPnumber,graphClusterCutoff,WCCsizeCutoff,thres_cellshape,outfolder
+<font size="+1">python run.py embedding,delta_embedding,   deltaThreshold,SPnumber,graphClusterCutoff,WCCsizeCutoff,thres_cellshape,outfolder</font>
 # Input
 1.embedding_file - a txt file with N cells in  rows and 2 embedding coordinates in columns.  
 #### example  
