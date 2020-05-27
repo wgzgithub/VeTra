@@ -11,7 +11,7 @@ You should install R_3.6(or higher version) and install "princurve" for your sys
 python runVelocityTrajectory.py embedding,delta_embedding,   deltaThreshold,SPnumber,graphClusterCutoff,WCCsizeCutoff,thres_cellshape,outfolder
 # Input
 1.embedding_file - a txt file with N cells in  rows and 2 embedding coordinates in columns.  
-### example  
+#### example  
 ```
 -6.344244118975589153e+00 1.268898329669120084e+00
 -3.511296625112249714e+00 -3.950214438779450082e-02
@@ -21,7 +21,7 @@ python runVelocityTrajectory.py embedding,delta_embedding,   deltaThreshold,SPnu
 ```
 
 2.delta_embedding - a txt file with N cells in rows and 2 velocity coodinates in columns. You can run "velocyto"(http://velocyto.org/) to get delta_embedding .  
-### example  
+#### example  
 ```
 -1.662885950152473424e-02 -1.019793607352199594e-01
 2.932140719083742297e-02 2.628113801391315230e-01
