@@ -5,7 +5,7 @@ Python package:   rpy2
 <br>R package:   princurve  
 
 The script wokrs on python but it depends on a R package "princurve".   
-You should install R_3.6(or higher version) and install "princurve" for your system.
+You should install R 3.6(or higher version) and install "princurve" for your system.
 
 # Usage
 python runVelocityTrajectory.py embedding,delta_embedding,   deltaThreshold,SPnumber,graphClusterCutoff,WCCsizeCutoff,thres_cellshape,outfolder
@@ -33,6 +33,8 @@ python runVelocityTrajectory.py embedding,delta_embedding,   deltaThreshold,SPnu
 
 4.SPnumber - a threshold for constrcuting the long shortest paths. The default is 1000.  
 
-5.graphClusterCutoff - a threshold for clustering close shortest paths. The default is 0.01.  
+5.graphClusterCutoff -  a threshold for the inconsistency coefficients (or inconsistent values) of nodes in the tree(agglomerative clusters from linkages)  
 
 6.WCCsizeCutoff - 
+
+7.thres_cellshape - 
