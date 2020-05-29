@@ -9,7 +9,7 @@ Users should install R 3.6(or higher version) and install "princurve" for your s
 
 # Usage
 ```
-python run.py [embedding] [delta_embedding] [deltaThreshold] [SPnumber] [graphClusterCutoff] [WCCsizeCutoff] [thres_cellshape] [outfolder]
+python run.py [embedding] [delta_embedding] [deltaThreshold] [SPnumber] [graphClusterCutoff] [WCCsizeCutoff] [trajectoryClusterSize] [outfolder]
 ```
 # Input
 1.embedding - a txt file with N cells in  rows and 2 embedding coordinates in columns.  
