@@ -6,7 +6,6 @@ Created on Wed May  6 11:25:56 2020
 @author: Kim Junil, Guangzheng Weng
 """
 
-num_job=$2
 
 import numpy as np
 import sys
@@ -25,7 +24,7 @@ matplotlib.use('Agg')
 
 
 file_name = ""
-embedding,delta_embedding, deltaThreshold,SPnumber,graphClusterCutoff,WCCsizeCutoff,thres_cellshape,outfolder = sys.argv[1:]
+embedding,delta_embedding, deltaThreshold,SPnumber,graphClusterCutoff,WCCsizeCutoff,trajectoryClusterSize,outfolder = sys.argv[1:]
 
 
 embedding = np.loadtxt(embedding)
@@ -34,7 +33,7 @@ deltaThreshold = int(float(deltaThreshold))
 SPnumber = int(float(SPnumber))
 graphClusterCutoff = float(graphClusterCutoff)
 WCCsizeCutoff = int(float(WCCsizeCutoff))
-thres_cellshape = int(float(thres_cellshape))
+trajectoryClusterSize = int(float(trajectoryClusterSize))
 re = v.main(embedding, delta_embedding, deltaThreshold, SPnumber, graphClusterCutoff, WCCsizeCutoff)
 embeddingGraphShortestpath=re[0]
 embeddingGraphSPclusters=re[1]
@@ -94,7 +93,7 @@ for clusterIndex in sortindex:
     index = np.where(embeddingGraphSPclusters==clusterIndex)
     tmp = np.sum(embeddingGraphShortestpath[index[0],:], axis=0)
     cellIndex=np.where(tmp!=0)[0]
-    if cellIndex.shape[0]>thres_cellshape:
+    if cellIndex.shape[0]>trajectoryClusterSize:
         plt.scatter(embedding[cellIndex,0],embedding[cellIndex,1], marker=".")
         
 
@@ -103,7 +102,7 @@ for clusterIndex in sortindex:
     index = np.where(embeddingGraphSPclusters==clusterIndex)
     tmp = np.sum(embeddingGraphShortestpath[index[0],:], axis=0)
     cellIndex=np.where(tmp!=0)[0]
-    if cellIndex.shape[0]>thres_cellshape:
+    if cellIndex.shape[0]>trajectoryClusterSize:
         plt.figure(clusterIndex+100)
         plt.quiver(embeddingSource[:,0],embeddingSource[:,1],embeddingTarget[:,0]-embeddingSource[:,0],embeddingTarget[:,1]-embeddingSource[:,1],0)
         plt.scatter(embedding[cellIndex,0],embedding[cellIndex,1], marker=".");
@@ -180,7 +179,7 @@ plt.savefig(outfolder+'/'+file_name+'final.pdf')
 #return and save lamdba.txt
 # =============================================================================
 
-tmp_te = np.where(cellSizeSorted>thres_cellshape)
+tmp_te = np.where(cellSizeSorted>trajectoryClusterSize)
 select_gene = []
 pseudotime = []
 
