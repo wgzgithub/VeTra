@@ -39,7 +39,7 @@ python run.py [embedding] [delta_embedding] [deltaThreshold] [SPnumber] [graphCl
 
 6.WCCsizeCutoff - 
 
-7.thres_cellshape -  
+7.trajectoryClusterSize -  
 
 8.outfolder - A absolute or relative path for output. 
 
