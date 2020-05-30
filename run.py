@@ -55,12 +55,12 @@ if not isExists:
 else:
     pass
 
-np.savetxt(outfolder+'/embeddingGraphShortestpath.csv', embeddingGraphShortestpath, delimiter = '\t')
-np.savetxt(outfolder+'/embeddingGraphSPclusters.csv', embeddingGraphSPclusters, delimiter = '\t')
-np.savetxt(outfolder+'/embeddingGraphSPstart.csv', embeddingGraphSPstart, delimiter = '\t')
-np.savetxt(outfolder+'/embeddingGraphSPend.csv', embeddingGraphSPend, delimiter = '\t')
-np.savetxt(outfolder+'/graphSource.csv', graphSource, delimiter = '\t')
-np.savetxt(outfolder+'/graphTarget.csv', graphTarget, delimiter = '\t')
+np.savetxt(outfolder+'/embeddingGraphShortestpath.csv', embeddingGraphShortestpath, delimiter = '\t', save_tmp,fmt='%f')
+np.savetxt(outfolder+'/embeddingGraphSPclusters.csv', embeddingGraphSPclusters, delimiter = '\t', save_tmp,fmt='%f')
+np.savetxt(outfolder+'/embeddingGraphSPstart.csv', embeddingGraphSPstart, delimiter = '\t', save_tmp,fmt='%f')
+np.savetxt(outfolder+'/embeddingGraphSPend.csv', embeddingGraphSPend, delimiter = '\t', save_tmp,fmt='%f')
+np.savetxt(outfolder+'/graphSource.csv', graphSource, delimiter = '\t', save_tmp,fmt='%f')
+np.savetxt(outfolder+'/graphTarget.csv', graphTarget, delimiter = '\t', save_tmp,fmt='%f')
 
 
    
