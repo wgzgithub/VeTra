@@ -210,7 +210,7 @@ for clusterIndex in sortindex[tmp_te]:
     
     save_tmp = np.array(save_tmp)
     
-    np.savetxt(outfolder+'//'+file_name+'cluster_'+str(clusterIndex)+'_cell_select.txt',fmt='%d')
+    np.savetxt(outfolder+'//'+file_name+'cluster_'+str(clusterIndex)+'_cell_select.txt',save_tmp,fmt='%d')
 
       
     save_tmp = []
@@ -223,7 +223,7 @@ for clusterIndex in sortindex[tmp_te]:
             save_tmp.append(0)
     save_tmp = np.array(save_tmp)
        
-    np.savetxt(outfolder+'/'+file_name+'cluster_'+str(clusterIndex)+'_pseudotime.txt', fmt='%f')
+    np.savetxt(outfolder+'/'+file_name+'cluster_'+str(clusterIndex)+'_pseudotime.txt',save_tmp, fmt='%f')
 
 
 
