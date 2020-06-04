@@ -55,12 +55,12 @@ if not isExists:
 else:
     pass
 
-np.savetxt(outfolder+'/embeddingGraphShortestpath.csv', embeddingGraphShortestpath, delimiter = '\t', save_tmp,fmt='%f')
-np.savetxt(outfolder+'/embeddingGraphSPclusters.csv', embeddingGraphSPclusters, delimiter = '\t', save_tmp,fmt='%f')
-np.savetxt(outfolder+'/embeddingGraphSPstart.csv', embeddingGraphSPstart, delimiter = '\t', save_tmp,fmt='%f')
-np.savetxt(outfolder+'/embeddingGraphSPend.csv', embeddingGraphSPend, delimiter = '\t', save_tmp,fmt='%f')
-np.savetxt(outfolder+'/graphSource.csv', graphSource, delimiter = '\t', save_tmp,fmt='%f')
-np.savetxt(outfolder+'/graphTarget.csv', graphTarget, delimiter = '\t', save_tmp,fmt='%f')
+np.savetxt(outfolder+'/embeddingGraphShortestpath.csv', embeddingGraphShortestpath, delimiter = '\t', fmt='%f')
+np.savetxt(outfolder+'/embeddingGraphSPclusters.csv', embeddingGraphSPclusters, delimiter = '\t', fmt='%f')
+np.savetxt(outfolder+'/embeddingGraphSPstart.csv', embeddingGraphSPstart, delimiter = '\t', fmt='%f')
+np.savetxt(outfolder+'/embeddingGraphSPend.csv', embeddingGraphSPend, delimiter = '\t', fmt='%f')
+np.savetxt(outfolder+'/graphSource.csv', graphSource, delimiter = '\t', fmt='%f')
+np.savetxt(outfolder+'/graphTarget.csv', graphTarget, delimiter = '\t', fmt='%f')
 
 
    
@@ -210,7 +210,7 @@ for clusterIndex in sortindex[tmp_te]:
     
     save_tmp = np.array(save_tmp)
     
-    np.savetxt(outfolder+'//'+file_name+'cluster_'+str(clusterIndex)+'_cell_select.txt',save_tmp,fmt='%d')
+    np.savetxt(outfolder+'//'+file_name+'cluster_'+str(clusterIndex)+'_cell_select.txt',fmt='%d')
 
       
     save_tmp = []
@@ -223,7 +223,7 @@ for clusterIndex in sortindex[tmp_te]:
             save_tmp.append(0)
     save_tmp = np.array(save_tmp)
        
-    np.savetxt(outfolder+'/'+file_name+'cluster_'+str(clusterIndex)+'_pseudotime.txt', save_tmp,fmt='%f')
+    np.savetxt(outfolder+'/'+file_name+'cluster_'+str(clusterIndex)+'_pseudotime.txt', fmt='%f')
 
 
 
