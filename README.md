@@ -31,9 +31,9 @@ python run.py [embedding] [delta_embedding] [deltaThreshold] [SPnumber] [graphCl
 .
 -2.781920407232985060e-02 -1.070944132601359122e-02
 ```
-3.deltaThreshold - a threshold for constructing graph. The default is 5.  
+3.deltaThreshold - The number of near cells for a each single cell.
 
-4.SPnumber - a threshold for constrcuting the long shortest paths. The default is 1000.  
+4.WCCsizeCutoff - The minimum size of weakly connective components.  
 
 5.graphClusterCutoff -  a threshold for the inconsistency coefficients (or inconsistent values) of nodes in the tree(agglomerative clusters from linkages)  
 
