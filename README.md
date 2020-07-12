@@ -39,7 +39,7 @@ python run.py embedding.txt delta_embedding.txt 15 60 3 ./results
 
 4.WCCsizeCutoff - The minimum size of weakly connective components.  
 
-5.Clusternumber - Maxmium clusters for hireachy cluster. It equals to how many pathways can be found.  
+5.Clusternumber - Maxmium clusters for hireachy cluster. It means how many pathways can be found.  
 
 6.outfolder - A absolute or relative path for output. 
 
