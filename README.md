@@ -11,6 +11,10 @@ Users should install R 3.6(or higher version) and install "princurve" for your s
 ```
 python run.py [embedding] [delta_embedding] [deltaThreshold] [WCCsizeCutoff] [Clusternumber] [outfolder]
 ```
+Command for example provided:
+```
+python run.py embedding.txt delta_embedding.txt 15 60 3 ./results
+```
 # Input
 1.embedding - a txt file with N cells in  rows and 2 embedding coordinates in columns.  
 #### example  
