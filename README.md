@@ -9,7 +9,7 @@ Users should install R 3.6(or higher version) and install "princurve" for your s
 
 # Usage
 ```
-python run.py [embedding] [delta_embedding] [deltaThreshold] [SPnumber] [graphClusterCutoff] [WCCsizeCutoff] [trajectoryClusterSize] [outfolder]
+python run.py [embedding] [delta_embedding] [deltaThreshold] [WCCsizeCutoff] [Clusternumber] [outfolder]
 ```
 # Input
 1.embedding - a txt file with N cells in  rows and 2 embedding coordinates in columns.  
@@ -22,7 +22,7 @@ python run.py [embedding] [delta_embedding] [deltaThreshold] [SPnumber] [graphCl
 -2.453315327236579968e+00 -7.753647990937119205e-01
 ```
 
-2.delta_embedding - a txt file with N cells in rows and 2 velocity coodinates in columns. Users can run "velocyto"(http://velocyto.org/) to get delta_embedding .  
+2.delta_embedding - a txt file with N cells in rows and 2 velocity coodinates in columns. Users can run "velocyto"(http://velocyto.org/) to get delta_embedding.  
 #### example  
 ```
 -1.662885950152473424e-02 -1.019793607352199594e-01
@@ -35,20 +35,16 @@ python run.py [embedding] [delta_embedding] [deltaThreshold] [SPnumber] [graphCl
 
 4.WCCsizeCutoff - The minimum size of weakly connective components.  
 
-5.graphClusterCutoff -  a threshold for the inconsistency coefficients (or inconsistent values) of nodes in the tree(agglomerative clusters from linkages)  
+5.Clusternumber - Maxmium clusters for hireachy cluster. It equals to how many pathways can be found.  
 
-6.WCCsizeCutoff - 
-
-7.trajectoryClusterSize -  
-
-8.outfolder - A absolute or relative path for output. 
+6.outfolder - A absolute or relative path for output. 
 
 
 # Output
 
-1.There are 6 csv format files including shortest path and clusters for embeeding graph.
+1. Some figiurs for pathways with pseudo time.
 
-2.cluster_x_cell_select.txt - a txt file of cell selection data for each cluster.("x" is order number of cluster)
+2. Some files record the pathways containing cell indexs.
 
-3.cluster_x_pseudotime - a txt file of pseudotime data with N time points in the same order as the N cells for each cluster.("x" is order number of cluster)
+3. Some files record the pseudo time for each single pathway.
 
