@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Mar 10 09:51:05 2020
+Created on Fri Jun 26 10:33:27 2020
 
-@author: Kim Junil, Guangzheng Weng
+@author: Guangzheng Weng&Junil Kim
 """
 
 from tqdm import tqdm
@@ -21,36 +21,98 @@ import scipy.cluster.hierarchy as sch
 from sklearn.cluster import AgglomerativeClustering
 import getopt
 import sys
+from scipy import spatial
+from sklearn.metrics.pairwise import cosine_similarity
+import matplotlib
+# from rpy2.robjects.packages import importr
+# import rpy2.robjects as ro
+# import rpy2.robjects.numpy2ri
+# rpy2.robjects.numpy2ri.activate()
+# princurve = importr('princurve', on_conflict="warn")
+matplotlib.use('Agg')
 
-def main(embedding,delta_embedding,deltaThreshold,SPnumber,graphClusterCutoff,WCCsizeCutoff):
-       
+def scale_(princ1):
+    maxva = princ1.max()
+    minva = princ1.min()
+    ranges = maxva - minva
     
-    #Construct network based on velocity vectors
+    new_leg = (princ1-minva)/ranges
+    
+    return new_leg
+    
+
+
+def main(embedding,delta_embedding, deltaThreshold,WCCsizeCutoff,clusternumber):
+
+    delta_embedding = np.loadtxt("delta_embedding.txt")
     merge_embed_delta = np.concatenate((embedding , delta_embedding), axis = 1)
-    embeddingVectorDistances = squareform(pdist(merge_embed_delta,'seuclidean'))
+    embeddingVectorDistances = squareform(pdist(merge_embed_delta,'euclidean'))
     embedding_toward = embedding+delta_embedding
     embedding_distance = cdist(embedding_toward,embedding,metric='euclidean')
-    
+    embed_points_distance = squareform(pdist(embedding,'euclidean'))
+
     graphSource=[]
     graphTarget=[]
-    
+
+
     for i in range(embedding.shape[0]):
         sortIndex = np.argsort(embedding_distance[i,:])
+        two_points_index = np.argsort(embed_points_distance[i,:])
+        cosine_list = []
         for j in range(deltaThreshold):
-            if sortIndex[j]!= i and ((embedding[sortIndex[j],:]- embedding[i,:])*delta_embedding[i,:]>0).sum() ==2:
-                graphSource.append(i)
-                graphTarget.append(sortIndex[j])
+            if sortIndex[j] != i:
+                pair_vector = delta_embedding[i,:]
+                tmp = sortIndex[j]
+                arrow_vector = delta_embedding[tmp,:]
+                cosine = 1 - spatial.distance.cosine(pair_vector, arrow_vector)
+                #print(cosine)
+                if cosine < 0:
+                    cosine = 0
+                    cosine_list.append((cosine,j))
+                else:
+                    cosine_list.append((cosine,j))
+        
+        
+        
+        arrow_root_cos_list =[]
+        for k in cosine_list:
+            if k[0] > 0.5:
+                pair_vector = embedding[sortIndex[k[1]],:]- embedding[i,:]
+                arrow_vector = delta_embedding[i,:]
+                cosine_n = 1 - spatial.distance.cosine(pair_vector, arrow_vector)
+                if cosine_n < 0:
+                    cosine_n = 0
+                    arrow_root_cos_list.append((cosine_n, k[1]))
+                else:
+                    arrow_root_cos_list.append((cosine_n, k[1]))
+        
+                    
+        if len(arrow_root_cos_list) > 0:
+            arrow_root_cosines = [b[0] for b in arrow_root_cos_list]
+            arrow_root_cosines = np.array(arrow_root_cosines)
+            arrow_root_index = [b[1] for b in arrow_root_cos_list]
+            arrow_root_index = np.array(arrow_root_index)
+            cosine_index = np.argsort(-arrow_root_cosines)[0]
+            
+            original_j = sortIndex[arrow_root_index[cosine_index]]
+            max_cosine = arrow_root_cosines[cosine_index]
+            if max_cosine > 0.5:
                 
+                    
+                graphSource.append(i)
+                graphTarget.append(original_j)
+           
     embeddingGraph = nx.DiGraph()
     edges = []
+
     for i in range(len(graphSource)):
-        each_edge = [graphSource[i], graphTarget[i]]
+
+        each_edge = (graphSource[i], graphTarget[i])
         edges.append(each_edge)
-    
-    embeddingGraph.add_edges_from(edges)
-    
-    
         
+    embeddingGraph.add_edges_from(edges)
+
+            
     bins = [i for i in nx.weakly_connected_components(embeddingGraph)]
     numbersBins = [len(c) for c in nx.weakly_connected_components(embeddingGraph)]
     numbersBinsSorted = np.array(sorted(numbersBins,reverse = True))
@@ -65,161 +127,76 @@ def main(embedding,delta_embedding,deltaThreshold,SPnumber,graphClusterCutoff,WC
     embeddingGraphSPclustersTotal=np.zeros(1)
     embeddingGraphSPstart=np.zeros(embedding.shape[0]).T
     embeddingGraphSPend=np.zeros(embedding.shape[0]).T
-    
-    
-    WCCindex=sortIndex
-    for i in tqdm(WCCindex):
-        try:
-            subgra_nodes = list(bins[i])
-            subgra_nodes = sorted(subgra_nodes)
-            embeddingGraphWCC=embeddingGraph.subgraph(subgra_nodes)
-            nodeIndex = sorted(embeddingGraphWCC.nodes)
-            
-            #Identify long shortest paths
-            embeddingGraphDistances=[i for i in nx.all_pairs_shortest_path_length(embeddingGraphWCC)]
-            mat = nx.to_scipy_sparse_matrix(embeddingGraphWCC, nodelist=nodeIndex)
-            embeddingGraphDistances= shortest_path(csgraph=mat)
-            embeddingGraphDistances[np.isinf(embeddingGraphDistances)]=-1
-            embeddingGraphShortestpath=np.zeros((0, embedding.shape[0]))
-            new = []
-            
-            for distanceIndex in range(int(embeddingGraphDistances.max())):
-                if len(embeddingGraphShortestpath)>SPnumber:
-                    break
-                else:
-                    [filterIndex1,filterIndex2]=np.where(embeddingGraphDistances==embeddingGraphDistances.max()-distanceIndex)
-                    newindex =np.argsort(filterIndex2)
-                    filterIndex1=filterIndex1[newindex]
-                    filterIndex2=filterIndex2[newindex]
-                    
-                    embeddingGraphShortestpathTemp=np.zeros((len(filterIndex1), embedding.shape[0]))
-                
-                    for i in range(len(filterIndex1)):
-                        #SPtemp=nx.shortest_path(embeddingGraphWCC,subgra_nodes[filterIndex1[i]],subgra_nodes[filterIndex2[i]])
-                        SPtemps=nx.all_shortest_paths(embeddingGraphWCC,subgra_nodes[filterIndex1[i]],subgra_nodes[filterIndex2[i]])
-                        SPtemps_list = np.array([k for k in SPtemps])
-                        if len(SPtemps_list) > 1:
-                    
-                            SPtemps_scores = np.sum(SPtemps_list, axis=1)
-                            SPtemp_index = np.where(SPtemps_scores==np.min(SPtemps_scores))[0][0]
-                            SPtemp = SPtemps_list[SPtemp_index]
-                        else:
-                            SPtemp = SPtemps_list[0]
-                        embeddingGraphShortestpathTemp[i,SPtemp]=1
-                        embeddingGraphSPstart[SPtemp[0]]=1
-                        embeddingGraphSPend[SPtemp[-1]]=1
-                    
-                    
-                    embeddingGraphShortestpath=np.concatenate((embeddingGraphShortestpath, embeddingGraphShortestpathTemp), axis=0)
-                    new.append(embeddingGraphShortestpathTemp)
-        
-                    if len(filterIndex1)>1:
-                        #Combine very close shortest paths
-                        embeddingGraphSPdistances=pdist(embeddingGraphShortestpath,'hamming');
-                        embeddingGraphSPlinkages=linkage(embeddingGraphSPdistances, method='single')
-                        embeddingGraphSPclusters=fcluster(embeddingGraphSPlinkages,t=graphClusterCutoff)
-                        embeddingGraphShortestpath2=np.zeros((embeddingGraphSPclusters.max(),embedding.shape[0]))
-                        
-                        for clusterIndex in range(embeddingGraphSPclusters.max()):
-                            #Notice: clusterIndex from 0 to max. but min cluster number is 1.
-                            mat1 = np.sum(embeddingGraphShortestpath[embeddingGraphSPclusters==clusterIndex+1,:], axis=0)
-                            cc = embeddingGraphShortestpath[embeddingGraphSPclusters==clusterIndex+1,:]
-                            
-                            
-                            embeddingGraphShortestpath2[clusterIndex, np.where(mat1>0)] = 1
-                        embeddingGraphShortestpath=embeddingGraphShortestpath2;
-            
-            #Cluster paths based on vectors
-            embeddingGraphSPdistances=[]
-            count = 0
-            for i in range(len(embeddingGraphShortestpath)):
-                for j in range(len(embeddingGraphShortestpath)):
-                    if i<j:
-                        
-                        temp_index1 = np.where(embeddingGraphShortestpath[i,:]!=0)[0]
-                        temp_index2 = np.where(embeddingGraphShortestpath[j,:]!=0)[0]
-                        temp = np.zeros((len(temp_index1), len(temp_index2)))
-                        count+=1
-                        for n in range(len(temp_index1)):
-                            for m in range(len(temp_index2)):
-                                temp[n,m] = embeddingVectorDistances[temp_index1[n], temp_index2[m]]
-                        
-                        c_min = np.min(temp,axis=0).tolist()
-                        r_min = np.min(temp.T,axis=0).tolist()
-                        tmp_distance = mean(c_min+r_min)
-                        
-                        embeddingGraphSPdistances.append(tmp_distance)
-            print(len(embeddingGraphSPdistances))
-            embeddingGraphSPlinkages=linkage(embeddingGraphSPdistances,'complete')
-            
-           
-            embeddingGraphSPdistances=squareform(embeddingGraphSPdistances)
-            
-            embeddingGraphSPclusters=fcluster(embeddingGraphSPlinkages,t=1, criterion='maxclust')
-            WithinDistance=np.mean(embeddingGraphSPdistances)
-            
-            for NumberOfClusters in range(2,11):
-                embeddingGraphSPclusters=fcluster(embeddingGraphSPlinkages,t=NumberOfClusters,criterion='maxclust')
-                WithinDistanceNext=[]
-                BetweenDistanceNext=[]
-                
-                for i in range(max(embeddingGraphSPclusters)):
-                    
-                    for j in range(max(embeddingGraphSPclusters)):
-                        
-                        
-                        index1 = np.where(embeddingGraphSPclusters==i+1)[0]
-                        index2 = np.where(embeddingGraphSPclusters==j+1)[0]
-                        
-                        temp_mat = np.zeros((len(index1), len(index2)))
-                        for n in range(len(index1)):
-                            for m in range(len(index2)):
-                                temp_mat[n,m] = embeddingGraphSPdistances[index1[n], index2[m]]
-                        
-                        
-                        distanceTemp=np.mean(temp_mat)
-                        
-                        if i==j:
-                            WithinDistanceNext.append(distanceTemp)
-                        elif i<j:
-                            BetweenDistanceNext.append(distanceTemp)
-                     
-                if NumberOfClusters==2:
-                    if WithinDistance<max(WithinDistanceNext):
-                        NumberOfClusters=NumberOfClusters-1
-                        embeddingGraphSPclusters=fcluster(embeddingGraphSPlinkages, t=NumberOfClusters,criterion='maxclust')
-                        break
-                    else:
-                        WithinDistance=WithinDistanceNext
-                        BetweenDistance=BetweenDistanceNext
-                
-                else:
-                    judge1 = np.median(BetweenDistanceNext)/np.median(WithinDistanceNext)
-                    judge2 = np.median(BetweenDistance)/np.median(WithinDistance)
-                    if judge1 < judge2:
-                        NumberOfClusters=NumberOfClusters-1
-                        embeddingGraphSPclusters=fcluster(embeddingGraphSPlinkages,t=NumberOfClusters,criterion='maxclust')
-                        break
-                    else:
-                        WithinDistance=WithinDistanceNext
-                        BetweenDistance=BetweenDistanceNext
-            
-            #print(embeddingGraphSPclusters.shape)
-            if embeddingGraphSPclustersTotal.any():
-                #print("ok")
-                embeddingGraphSPclusters=embeddingGraphSPclusters+np.max(embeddingGraphSPclustersTotal)
-            
-            
-            embeddingGraphShortestpathTotal=np.concatenate((embeddingGraphShortestpathTotal,embeddingGraphShortestpath),axis=0)
-            embeddingGraphSPclustersTotal=np.concatenate((embeddingGraphSPclustersTotal,embeddingGraphSPclusters),axis=0)
-        except ValueError:
-            pass
-        continue
-    
-    
-    embeddingGraphShortestpath=embeddingGraphShortestpathTotal
-    embeddingGraphSPclusters=embeddingGraphSPclustersTotal
-    embeddingGraphSPclusters = np.delete(embeddingGraphSPclusters,0,axis=0)
+    embeddingGraphSPdistances=[]
 
+    for i in sortIndex:
+        space_path = np.zeros((1, embedding.shape[0]))
+        subgra_nodes = list(bins[i])
+        subgra_nodes = sorted(subgra_nodes)
+        embeddingGraphWCC=embeddingGraph.subgraph(subgra_nodes)
+        nodeIndex = sorted(embeddingGraphWCC.nodes)
+        nodeIndex = np.array(nodeIndex)
+        space_path[0, nodeIndex] = 1
+        embeddingGraphShortestpathTotal=np.concatenate((embeddingGraphShortestpathTotal,space_path),axis=0)
+
+    if embeddingGraphShortestpathTotal.shape[0] > 1:
+        for i in range(len(embeddingGraphShortestpathTotal)):
+            for j in range(len(embeddingGraphShortestpathTotal)):
+                if i<j:
+                    
+                    p1_index =  np.where(embeddingGraphShortestpathTotal[i,:]>0)[0]
+                    p2_index = np.where(embeddingGraphShortestpathTotal[j,:]>0)[0]
+                    
+                    p1 = merge_embed_delta[p1_index,:]
+                    p2 = merge_embed_delta[p2_index,:]
+                    
+                    if len(p1) < len(p2):
+                        
+                        two_path_dis = cdist(p1,p2,metric='euclidean')
+                        min_dis = np.min(two_path_dis, axis=1)
+                        max_dis = min_dis.max()
+                        embeddingGraphSPdistances.append(max_dis)
+                    else:
+                        two_path_dis = cdist(p2,p1,metric='euclidean')
+                        min_dis = np.min(two_path_dis, axis=1)
+                        max_dis = min_dis.max()
+                        embeddingGraphSPdistances.append(max_dis)
+                    #distance, path = fastdtw(p1, p2, dist=euclidean)
+                    #embeddingGraphSPdistances.append(distance)
+                    
+
+                    
+        embeddingGraphSPlinkages=linkage(embeddingGraphSPdistances,'complete')
+        embeddingGraphSPclusters=fcluster(embeddingGraphSPlinkages,t=clusternumber,criterion='maxclust')
+    else:
+        embeddingGraphSPclusters = [1]
+        
+    deltaThreshold = deltaThreshold * 3
+    new_cluster_list = []
+
+    for i in range(embeddingGraphSPclusters.max()):
+        same_cluster_index = np.where(embeddingGraphSPclusters == i+1)[0]
+        same_cluster_path = embeddingGraphShortestpathTotal[same_cluster_index,:]
+        tmp = np.sum(same_cluster_path, axis = 0)
+        same_cluster_cells = np.where(tmp > 0)[0]
+        
+        append_cells = []
+        for j in same_cluster_cells:
+            
+            
+            two_p_index = np.argsort(embed_points_distance[j,:])
+            
+            for k in range(deltaThreshold):
+                vec1 = delta_embedding[j,:]
+                vec2 = delta_embedding[two_p_index[k]]
+                cosine_ = 1 - spatial.distance.cosine(vec1, vec2)
+                if cosine_ > 0.7 and two_p_index[k] not in same_cluster_cells:
+                    append_cells.append(two_p_index[k])
+                    
+        new_cluster = np.concatenate((same_cluster_cells, append_cells))
+        
+        new_cluster = np.unique(new_cluster)
+        new_cluster_list.append(new_cluster)
     
-    return embeddingGraphShortestpath,embeddingGraphSPclusters,embeddingGraphSPstart,embeddingGraphSPend,graphSource,graphTarget
+    new_embeddingGraphShortestpathTotal = np.array(new_cluster_list)
+    return new_embeddingGraphShortestpathTotal, embeddingGraphSPclusters, graphSource, graphTarget
