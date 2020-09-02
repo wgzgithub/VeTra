@@ -1,4 +1,4 @@
-# VelocityTrajectory
+# VeTra
 A tool for infering scRNA_seq trajectory from RNA velocity
 # Dependency
 Python package:   rpy2
