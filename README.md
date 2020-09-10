@@ -4,8 +4,8 @@ A tool for infering scRNA_seq trajectory from RNA velocity
 Python package:   rpy2
 <br>R package:   princurve  
 
-The script wokrs on python but it depends on a R package "princurve".   
-Users should install R 3.6(or higher version) and install "princurve" for your system.
+The script works on python.
+R 3.6(or higher version) and "princurve" package in R are required.
 
 # Usage
 ```
@@ -16,7 +16,7 @@ Command for example provided:
 python VeTra embedding.txt delta_embedding.txt 15 60 3 ./results
 ```
 # Input
-1.embedding - a txt file with N cells in  rows and 2 embedding coordinates in columns.  
+1.embedding - a txt file with N cells in rows and 2D embedding coordinates in columns. The 2D embedding can be results of PCA, tSNE, or UMAP.
 #### example  
 ```
 -6.344244118975589153e+00 1.268898329669120084e+00
@@ -26,7 +26,7 @@ python VeTra embedding.txt delta_embedding.txt 15 60 3 ./results
 -2.453315327236579968e+00 -7.753647990937119205e-01
 ```
 
-2.delta_embedding - a txt file with N cells in rows and 2 velocity coodinates in columns. Users can run "velocyto"(http://velocyto.org/) to get delta_embedding.  
+2.delta_embedding - a txt file with N cells in rows and 2D velocity vectorss in columns. Users can run "velocyto"(http://velocyto.org/) or "scVelo" (https://github.com/theislab/scvelo) to get delta_embedding.  
 #### example  
 ```
 -1.662885950152473424e-02 -1.019793607352199594e-01
