@@ -35,20 +35,22 @@ python VeTra embedding.txt delta_embedding.txt 15 60 3 ./results
 .
 -2.781920407232985060e-02 -1.070944132601359122e-02
 ```
-3.deltaThreshold - The number of near cells for a each single cell.
+3.deltaThreshold - The number of closest neighbor cells
 
 4.WCCsizeCutoff - The minimum size of weakly connective components.  
 
-5.Clusternumber - Maxmium clusters for hireachy cluster. It means how many pathways can be found.  
+5.Clusternumber - The number of clusters for hireachical clustering. It means how many trajectories can be found.  
 
 6.outfolder - A absolute or relative path for output. 
 
 
 # Output
 
-1. Some figiurs for pathways with pseudo time.
+1. 2D embedding figures colored by grouping of cells in the same stream of trajectory. Ex) cell_group1.pdf
 
-2. Some files record the pathways containing cell indexs.
+2. 2D embedding figures colored by pseudo-time ordering. Ex) cell_group1with_pseudotime.pdf
 
-3. Some files record the pseudo time for each single pathway.
+3. Files for the lists of selected cells for each group of cells. Ex) cell_group1_selected_cell.txt
+
+4. Files for the pseudo-time ordering information for each group of cells. Ex) cell_group1_pseudotime.txt
 
