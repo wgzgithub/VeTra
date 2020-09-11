@@ -1,5 +1,9 @@
 # VeTra
 A tool for infering scRNA_seq trajectory from RNA velocity
+
+# Citation
+https://www.biorxiv.org/content/10.1101/2020.09.01.277095v1
+
 # Dependency
 Python package:   rpy2
 <br>R package:   princurve  
