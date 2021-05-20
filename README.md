@@ -5,14 +5,14 @@ A tool for infering scRNA_seq trajectory from RNA velocity
 https://www.biorxiv.org/content/10.1101/2020.09.01.277095v1
 
 # Dependency
-  openmpi
+  	openmpi
 	JPype
 	rpy2
 	princurve
-  sklearn
-  scipy
-  numpy
-  statsmodels
+ 	sklearn
+  	scipy
+  	numpy
+  	statsmodels
   
 
 The script works on python.
