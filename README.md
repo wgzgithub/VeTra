@@ -2,7 +2,7 @@
 A tool for infering scRNA_seq trajectory from RNA velocity
 
 # Citation
-https://www.biorxiv.org/content/10.1101/2020.09.01.277095v1
+https://doi.org/10.1093/bioinformatics/btab364
 
 # Dependency
   	openmpi
