@@ -20,7 +20,7 @@ R 3.6(or higher version) and "princurve" package in R are required.
 TF(Transfer entroy) inference needs openmpi installation on Linux OS. If you only want to infer trajectories of datasets, it is unnessary to install "openmpi" and "JPype".
 
 ## 1. Run VeTenet using expression data in a csv file and RNA velocity files in txt format
-#### Initialize an example
+#### Initialize an example(please make your script in the same folder of VeTra to import VeTra successfully)
 	import VeTra as vt
 	ex1 = vt.VeTra("embedding.txt", "delta_embedding.txt")
 	
