@@ -26,7 +26,9 @@ TF(Transfer entroy) inference needs openmpi installation on Linux OS. If you onl
 	
 #### Execute trajectory inference 
 	
-	ex1.vetra(deltaThreshold=12, WCCsizeCutoff=5, clusternumber=3)
+	ex1.vetra(deltaThreshold=12, WCCsizeCutoff=5, clusternumber=3,cosine_thres=0.7, expand=2)
+	#The default of cosine_thres is 0.7, which is a threshold to pick up similar neighbors of each cell. High cosine_thres usually finds less trajectories. 
+	#The default of expand is 2. If you find the trajectories inferred dont cover all possbile cells, you will change expand larger.
 
 
 #### Run TENET for all trajectories 
