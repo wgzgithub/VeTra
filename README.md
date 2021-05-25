@@ -35,7 +35,7 @@ TF(Transfer entroy) inference needs openmpi installation on Linux OS. If you onl
 	
 	ex1.run_tenet_tf(expression="chroman_exp_filtered.csv", thread= 15, history_len = 1, species = 'mouse', bulk_run=True)
 	
-###### (4) history_length - the length of history. In the benchmark data TENET provides best result when the length of history set to 1.
+###### (1) history_length - the length of history. In the benchmark data TENET provides best result when the length of history set to 1.
 
 	
 #### Make GRNs for  all trajectories 
