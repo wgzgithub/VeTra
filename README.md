@@ -29,7 +29,7 @@ TF(Transfer entroy) inference needs openmpi installation on Linux OS. If you onl
 	ex1.vetra(deltaThreshold=12, WCCsizeCutoff=5, clusternumber=3,cosine_thres=0.7, expand=2)
 	#The default of cosine_thres is 0.7, which is a threshold to pick up similar neighbors of each cell. High cosine_thres usually finds less trajectories. 
 	#The default of expand is 2. If you find the trajectories inferred dont cover all possbile cells, you will change expand larger.
-
+	#deltaThreshold determines how many neighbors selected for each cell. It depends on how many cells in total. For example, deltaThreshold = 20~50 is good 	for the number of cells equalling to 3000
 
 #### Run TENET for all trajectories 
 	
